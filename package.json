@@ -1,8 +1,8 @@
 {
-  "name": "@sourcegraph/scip-typescript",
-  "version": "0.3.12",
+  "name": "@anysphere/scip-typescript",
+  "version": "0.3.13",
   "description": "SCIP indexer for TypeScript and JavaScript",
-  "publisher": "sourcegraph",
+  "publisher": "anysphere",
   "bin": "dist/src/main.js",
   "main": "./dist/src/main.js",
   "scripts": {
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sourcegraph/scip-typescript.git"
+    "url": "git+https://github.com/cassanof/scip-typescript.git"
   },
   "keywords": [
     "scip",
@@ -29,9 +29,9 @@
   "author": "Code Intelligence at Sourcegraph",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/sourcegraph/scip-typescript/issues"
+    "url": "https://github.com/cassanof/scip-typescript/issues"
   },
-  "homepage": "https://github.com/sourcegraph/scip-typescript#readme",
+  "homepage": "https://github.com/cassanof/scip-typescript#readme",
   "dependencies": {
     "commander": "^11.1.0",
     "google-protobuf": "^3.21.2",
