@@ -44,6 +44,11 @@ export class FileIndexer {
     //   return
     // }
 
+    // skip node_modules
+    if (this.sourceFile.fileName.includes('node_modules')) {
+      return
+    }
+
     const byteSize = Buffer.from(this.sourceFile.getText()).length
     if (
       this.options.maxFileByteSizeNumber &&
@@ -60,11 +65,6 @@ export class FileIndexer {
       return
     }
 
-
-    // skip node_modules
-    if (this.sourceFile.fileName.includes('node_modules')) {
-      return
-    }
 
     this.emitSourceFileOccurrence()
     this.visit(this.sourceFile)
