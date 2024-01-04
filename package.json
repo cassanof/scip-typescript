@@ -1,6 +1,6 @@
 {
   "name": "@anysphere/scip-typescript",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "description": "SCIP indexer for TypeScript and JavaScript",
   "publisher": "anysphere",
   "bin": "dist/src/main.js",
