@@ -78,7 +78,7 @@ export class ProjectIndexer {
   constructor(
     public readonly config: ts.ParsedCommandLine,
     public readonly options: ProjectOptions,
-    public readonly ig: Ignore,
+    public readonly ignoreMap: Map<string, Ignore>,
     cache: GlobalCache
   ) {
     const host = createCompilerHost(cache, config.options, options)
@@ -124,8 +124,23 @@ export class ProjectIndexer {
     for (const [index, sourceFile] of filesToIndex.entries()) {
       const title = path.relative(this.options.cwd, sourceFile.fileName)
       // check gitignore
-      if (this.options.gitignore && this.ig.ignores(title)) {
-        continue
+      if (this.options.gitignore) {
+        let pIgnores = [];
+        for (const [key, value] of this.ignoreMap.entries()) {
+          if (sourceFile.fileName.startsWith(key)) {
+            pIgnores.push(value);
+          }
+        }
+        let doIgnore = false;
+        for (const ignore of pIgnores) {
+          if (ignore.ignores(title)) {
+            doIgnore = true;
+            break;
+          }
+        }
+        if (doIgnore) {
+          continue
+        }
       }
       jobs?.tick({ title })
       if (!this.options.progressBar) {
