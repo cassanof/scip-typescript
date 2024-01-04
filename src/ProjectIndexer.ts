@@ -10,6 +10,7 @@ import { Input } from './Input'
 import { Packages } from './Packages'
 import * as scip from './scip'
 import { ScipSymbol } from './ScipSymbol'
+import { Ignore } from 'ignore'
 
 function createCompilerHost(
   cache: GlobalCache,
@@ -77,6 +78,7 @@ export class ProjectIndexer {
   constructor(
     public readonly config: ts.ParsedCommandLine,
     public readonly options: ProjectOptions,
+    public readonly ig: Ignore,
     cache: GlobalCache
   ) {
     const host = createCompilerHost(cache, config.options, options)
@@ -87,8 +89,8 @@ export class ProjectIndexer {
   public index(): void {
     const startTimestamp = Date.now()
     const sourceFiles = this.program.getSourceFiles()
-
     const filesToIndex: ts.SourceFile[] = []
+    console.log(`+ cwd ${this.options.cwd}`)
     // Visit every sourceFile in the program
     for (const sourceFile of sourceFiles) {
       const includes = this.config.fileNames.includes(sourceFile.fileName)
@@ -121,6 +123,10 @@ export class ProjectIndexer {
     let lastWrite = startTimestamp
     for (const [index, sourceFile] of filesToIndex.entries()) {
       const title = path.relative(this.options.cwd, sourceFile.fileName)
+      // check gitignore
+      if (this.options.gitignore && this.ig.ignores(title)) {
+        continue
+      }
       jobs?.tick({ title })
       if (!this.options.progressBar) {
         const now = Date.now()

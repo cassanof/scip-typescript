@@ -61,6 +61,7 @@ for (const snapshotDirectory of snapshotDirectories) {
       progressBar: false,
       indexedProjects: new Set(),
       globalCaches: true,
+      gitignore: false,
     })
     if (inferTsconfig) {
       fs.rmSync(tsconfigJsonPath)

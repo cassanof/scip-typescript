@@ -10,6 +10,7 @@ import * as scip from './scip'
 export interface MultiProjectOptions {
   inferTsconfig: boolean
   progressBar: boolean
+  gitignore: boolean
   yarnWorkspaces: boolean
   yarnBerryWorkspaces: boolean
   pnpmWorkspaces: boolean
@@ -50,6 +51,7 @@ export function mainCommand(
   command
     .command('index')
     .option('--cwd <path>', 'the working directory', process.cwd())
+    .option('--gitignore', 'whether to respect .gitignore files', false)
     .option('--pnpm-workspaces', 'whether to index all pnpm workspaces', false)
     .option('--yarn-workspaces', 'whether to index all yarn workspaces', false)
     .option(

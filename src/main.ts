@@ -18,6 +18,7 @@ import {
 import { inferTsconfig } from './inferTsconfig'
 import { ProjectIndexer } from './ProjectIndexer'
 import * as scip from './scip'
+import ignore from 'ignore'
 
 export function main(): void {
   mainCommand((projects, options) => indexCommand(projects, options)).parse(
@@ -107,6 +108,23 @@ function makeAbsolutePath(cwd: string, relativeOrAbsolutePath: string): string {
 }
 
 function indexSingleProject(options: ProjectOptions, cache: GlobalCache): void {
+  // find all gitignore files
+  const ig = ignore()
+  let dir = options.projectRoot
+  while (options.gitignore) {
+    const gitignore = path.join(dir, '.gitignore')
+    if (fs.existsSync(gitignore)) {
+      console.log(`+ found gitignore ${gitignore}`)
+      const lines = fs.readFileSync(gitignore).toString().split('\n')
+      ig.add(lines)
+    }
+    const nextDir = path.dirname(dir)
+    if (nextDir === dir) {
+      break
+    }
+    dir = nextDir
+  }
+
   if (options.indexedProjects.has(options.projectRoot)) {
     return
   }
@@ -139,6 +157,7 @@ function indexSingleProject(options: ProjectOptions, cache: GlobalCache): void {
   }
 
   for (const projectReference of config.projectReferences || []) {
+    console.log(`+ recurring on ${options.projectDisplayName} (reference)`)
     indexSingleProject(
       {
         ...options,
@@ -150,7 +169,8 @@ function indexSingleProject(options: ProjectOptions, cache: GlobalCache): void {
   }
 
   if (config.fileNames.length > 0) {
-    new ProjectIndexer(config, options, cache).index()
+    console.log(`+ indexing ${options.projectDisplayName}`)
+    new ProjectIndexer(config, options, ig, cache).index()
   }
 }
 
