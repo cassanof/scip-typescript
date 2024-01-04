@@ -60,6 +60,12 @@ export class FileIndexer {
       return
     }
 
+
+    // skip node_modules
+    if (this.sourceFile.fileName.includes('node_modules')) {
+      return
+    }
+
     this.emitSourceFileOccurrence()
     this.visit(this.sourceFile)
   }
