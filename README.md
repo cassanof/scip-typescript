@@ -7,7 +7,7 @@
 ### Installation
 
 ```sh
-npm install -g @sourcegraph/scip-typescript
+npm install -g @anysphere/scip-typescript
 ```
 
 Currently, Node v18, Node v20 are supported. <!-- Source of truth: .github/workflows/ci.yml -->
@@ -117,9 +117,3 @@ Follow the steps below to migrate from lsif-node to scip-typescript:
   can install via `yarn global add @sourcegraph/src`. It’s okay if the version
   of your `src` command-line interface does not match the version of your
   Sourcegraph instance.
-
-## Contributing
-
-See [Development.md](./Development.md) for docs on how to work on this project.
-
-Contributors should follow the [Sourcegraph Community Code of Conduct](https://handbook.sourcegraph.com/company-info-and-process/community/code_of_conduct/).
